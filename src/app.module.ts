@@ -8,6 +8,18 @@ import { LogMiddlewareMiddleware } from './middleware/log-middleware/log-middlew
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi, { valid } from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module.js';
+import { CategoriesController } from './categories/categories.controller.js';
+import { CategoriesModule } from './categories/categories.module.js';
+import { PublishersModule } from './publishers/publishers.module.js';
+import { AuthorsModule } from './authors/authors.module.js';
+import { BookAuthorsModule } from './book-authors/book-authors.module.js';
+import { CustomersModule } from './customers/customers.module.js';
+import { CustomerAddressesModule } from './customer-addresses/customer-addresses.module.js';
+import { OrdersModule } from './orders/orders.module.js';
+import { OrderItemsModule } from './order-items/order-items.module.js';
+import { PaymentsModule } from './payments/payments.module.js';
+import { ShipmentsModule } from './shipments/shipments.module.js';
 
 @Module({
   imports: [BooksModule, 
@@ -25,21 +37,45 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         DB_DATABASE:Joi.string().required(),
       })
     }),
-    TypeOrmModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (ConfigService: ConfigService) => ({
-      type:'postgres',
-      host: ConfigService.get<string>('DB_HOST'),
-      port: ConfigService.get<number>('DB_PORT'),
-      username: ConfigService.get<string>('DB_USEERNAME'),
-      password: ConfigService.get<string>('DB_PASSWORD'),
-      database: ConfigService.get<string>('DB_DATABASE'),
+    
+TypeOrmModule.forRootAsync({
+  inject: [ConfigService],
+  useFactory: (configService: ConfigService) => ({
+    type: 'postgres',
+    host: configService.get<string>('DB_HOST'),
+    port: configService.get<number>('DB_PORT'),
+    username: configService.get<string>('DB_USERNAME'),
+    password: configService.get<string>('DB_PASSWORD'),
+    database: configService.get<string>('DB_DATABASE'),
 
-      autoLoadEntities: true,
+    autoLoadEntities: true,
 
-      synchronize: ConfigService.get<string>('NODE_ENV') === 'development'
-    })
-  }),  
+    synchronize: configService.get<string>('NODE_ENV') === 'development'
+  })
+}),
+    
+UsersModule,
+    
+CategoriesModule,
+    
+PublishersModule,
+    
+AuthorsModule,
+    
+BookAuthorsModule,
+    
+CustomersModule,
+    
+CustomerAddressesModule,
+    
+OrdersModule,
+    
+OrderItemsModule,
+    
+PaymentsModule,
+    
+ShipmentsModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -50,3 +86,4 @@ export class AppModule implements NestModule {
     .forRoutes('*')
   }
 }
+
