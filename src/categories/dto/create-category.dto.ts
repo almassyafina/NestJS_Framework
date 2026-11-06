@@ -6,7 +6,7 @@ import {
 
 export class CreateCategoryDto {
   @IsString()
-  @IsNotEmpty()
-  @MaxLength(100)
-  name: string;
+  @IsNotEmpty({message: 'Nama Category Harus Disi'})
+  @MaxLength(100, {message: 'Nama Category Maksimal 100 Karakter'})
+  readonly name: string;
 }

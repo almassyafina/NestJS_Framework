@@ -15,7 +15,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto.js';
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   // Menambahkan kategori
